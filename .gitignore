@@ -1,0 +1,29 @@
+# CLion project files
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea.shelf/
+.idea/cmake_ws/
+
+# CMake build directories (ignore the entire build folder)
+cmake-build-*/
+CMakeLists.txt.user.*
+
+# Executables, object files, and libraries
+*.o
+*.a
+*.lib
+*.so
+*.dylib
+*.exe
+*.dll
+
+# Dependency management files (e.g., vcpkg)
+vcpkg/
+# If you manage other dependencies manually, add those folders here too
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Project specific

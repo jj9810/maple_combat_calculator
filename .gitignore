@@ -27,3 +27,4 @@ vcpkg/
 Thumbs.db
 
 # Project specific
+.idea

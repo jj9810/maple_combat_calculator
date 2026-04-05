@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// BattlePracticeResult
+// API 응답 데이터 구조 (전투 결과 리플레이 정보)
+message BattlePracticeResult {
+    string register_date = 1; // 리플레이 등록 일시 (KST, 일 단위 데이터로 시, 분은 일괄 0으로 표기)
+    int64 total_play_time = 2; // 총 연무 시간 (ms)
+    int64 total_damage = 3; // 총합 데미지
+    int64 total_dps = 4; // 초당 평균 데미지
+    string end_type = 5; // 종료 타입 (1:자동 종료, 2:수동 종료, 3:시간 초과, 9:기타 종료)
+    int64 like_count = 6; // 리플레이 추천 수
+    repeated SkillStatistic skill_statistic = 7; // 스킬 단위 전투 분석 정보
+}
+
+message SkillStatistic {
+    string skill_name = 1; // 스킬 명
+    int64 damage = 2; // 누적 데미지
+    string damage_percent = 3; // 데미지 점유율
+    int64 dps = 4; // 초당 평균 데미지
+    int64 use_count = 5; // 사용 횟수
+    int64 damage_per_use = 6; // 1회당 평균 데미지
+    int64 attack_count = 7; // 공격 횟수
+    int64 max_damage = 8; // 최대 데미지(1타)
+    int64 min_damage = 9; // 최소 데미지(1타)
+}

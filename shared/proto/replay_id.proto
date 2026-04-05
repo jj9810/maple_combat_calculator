@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// ReplayId
+// 연무장 리플레이 고유 식별 정보
+message ReplayId {
+    string register_date = 1; // 리플레이 등록 일시(KST, 일 단위 데이터로 시, 분은 일괄 0으로 표기)
+    string replay_id = 2; // 연무장 리플레이 고유 식별자
+}

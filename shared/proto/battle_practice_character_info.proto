@@ -1,0 +1,477 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// BattlePracticeCharacterInfo
+// API 응답 데이터 구조
+message BattlePracticeCharacterInfo {
+    BasicObject basic_object = 1; // 기본 정보
+    StatObject stat_object = 2; // 스탯 관련 정보
+    HyperStatObject hyper_stat_object = 3; // 하이퍼 스탯 정보
+    PropensityObject propensity_object = 4; // 성향 정보
+    AbilityObject ability_object = 5; // 어빌리티 정보
+    ItemObject item_object = 6; // 장착 장비(캐시 장비 제외) 정보
+    CashItemObject cash_item_object = 7; // 장착 캐시 장비 정보
+    PetObject pet_object = 8; // 장착 펫 정보
+    SkillObject skill_object = 9; // 스킬 정보
+    LinkSkillObject link_skill_object = 10; // 링크 스킬 정보
+    VMatrixObject v_matrix_object = 11; // V 매트릭스 정보
+    HexaMatrixObject hexa_matrix_object = 12; // HEXA 매트릭스 정보
+    RingReserveSkillObject ring_reserve_skill_object = 13; // 예비 특수 반지 슬롯 정보
+    UnionRaiderObject union_raider_object = 14; // 유니온 공격대 정보
+    UnionArtifactObject union_artifact_object = 15; // 유니온 아티팩트 정보
+    UnionChampionObject union_champion_object = 16; // 유니온 챔피언 정보
+    GuildObject guild_object = 17; // 길드 정보
+}
+
+message BasicObject {
+    string character_name = 1; // 캐릭터 명
+    int64 character_level = 2; // 캐릭터 레벨
+    string character_class = 3; // 캐릭터 직업
+    string character_class_level = 4; // 캐릭터 전직 차수
+    string character_image = 5; // 캐릭터 이미지 URL
+}
+
+message StatObject {
+    BasicStatObject basic_stat_object = 1; // 스탯 정보
+    SymbolStatObject symbol_stat_object = 2; // 장착 심볼 정보
+    OtherStatObject other_stat_object = 3; // 기타 능력치 영향 요소
+}
+
+message BasicStatObject {
+    repeated StatInfo final_stat = 1; // 현재 스탯 정보
+}
+
+message StatInfo {
+    string stat_name = 1; // 스탯 명
+    string stat_value = 2; // 스탯 값
+}
+
+message SymbolStatObject {
+    repeated SymbolInfo symbol = 1; // 심볼 정보
+}
+
+message SymbolInfo {
+    string symbol_name = 1; // 심볼 명
+    string symbol_icon = 2; // 심볼 아이콘
+    string symbol_description = 3; // 심볼 설명
+    string symbol_other_effect_description = 4; // 심볼 부가 효과 설명
+    string symbol_force = 5; // 심볼로 인한 증가 수치
+    int64 symbol_level = 6; // 심볼 레벨
+    string symbol_str = 7; // 심볼로 증가한 힘
+    string symbol_dex = 8; // 심볼로 증가한 민첩
+    string symbol_int = 9; // 심볼로 증가한 지력
+    string symbol_luk = 10; // 심볼로 증가한 운
+    string symbol_hp = 11; // 심볼로 증가한 체력
+    string symbol_drop_rate = 12; // 심볼로 증가한 아이템 드롭률
+    string symbol_meso_rate = 13; // 심볼로 증가한 메소 획득량
+    string symbol_exp_rate = 14; // 심볼로 증가한 경험치 획득량
+    int64 symbol_growth_count = 15; // 현재 보유 성장치
+    int64 symbol_require_growth_count = 16; // 성장 시 필요한 성장치
+}
+
+message OtherStatObject {
+    repeated OtherStatInfo other_stat = 1; // 능력치에 영향을 주는 요소 및 스탯 정보
+}
+
+message OtherStatInfo {
+    string other_stat_type = 1; // 스탯 타입
+    repeated StatInfo stat_info = 2; // 스탯 정보
+}
+
+message HyperStatObject {
+    repeated HyperStatInfo hyper_stat = 1; // 하이퍼 스탯 정보
+}
+
+message HyperStatInfo {
+    string stat_type = 1; // 스탯 종류
+    int64 stat_level = 2; // 스탯 레벨
+    string stat_increase = 3; // 스탯 상승량
+}
+
+message PropensityObject {
+    int64 charisma_level = 1; // 카리스마 레벨
+    int64 sensibility_level = 2; // 감성 레벨
+    int64 insight_level = 3; // 통찰력 레벨
+    int64 willingness_level = 4; // 의지 레벨
+    int64 handicraft_level = 5; // 손재주 레벨
+    int64 charm_level = 6; // 매력 레벨
+}
+
+message AbilityObject {
+    repeated AbilityInfo ability_info = 1; // 어빌리티 정보
+}
+
+message AbilityInfo {
+    string ability_no = 1; // 어빌리티 번호
+    string ability_grade = 2; // 어빌리티 등급
+    string ability_value = 3; // 어빌리티 옵션 및 수치
+}
+
+message ItemObject {
+    ItemEquipmentObject item_equipment_object = 1; // 장착 장비 정보
+    Title title = 2; // 칭호 정보
+    repeated Equipment dragon_equipment = 3; // 에반 드래곤 장비 정보 (에반인 경우 응답)
+    repeated Equipment mechanic_equipment = 4; // 메카닉 장비 정보 (메카닉인 경우 응답)
+    SetEffectObject set_effect_object = 5; // 적용 세트 효과 정보
+}
+
+message ItemEquipmentObject {
+    repeated Equipment item_equipment = 1; // 장비 정보
+}
+
+message Equipment {
+    string item_equipment_part = 1; // 장비 부위 명
+    string item_equipment_slot = 2; // 장비 슬롯 위치
+    string item_name = 3; // 장비 명
+    string item_icon = 4; // 장비 아이콘
+    string item_description = 5; // 장비 설명
+    string item_shape_name = 6; // 장비 외형
+    string item_shape_icon = 7; // 장비 외형 아이콘
+    string item_gender = 8; // 전용 성별
+    ItemTotalOption item_total_option = 9; // 장비 최종 옵션 정보
+    ItemBaseOption item_base_option = 10; // 장비 기본 옵션 정보
+    string potential_option_flag = 11; // 잠재능력 봉인 여부 (true 봉인, false 봉인 없음)
+    string additional_potential_option_flag = 12; // 에디셔널 잠재능력 개방 여부 (true 봉인, false 봉인 없음)
+    string potential_option_grade = 13; // 잠재능력 등급
+    string additional_potential_option_grade = 14; // 에디셔널 잠재능력 등급
+    string potential_option_1 = 15; // 잠재능력 첫 번째 옵션
+    string potential_option_2 = 16; // 잠재능력 두 번째 옵션
+    string potential_option_3 = 17; // 잠재능력 세 번째 옵션
+    string additional_potential_option_1 = 18; // 에디셔널 잠재능력 첫 번째 옵션
+    string additional_potential_option_2 = 19; // 에디셔널 잠재능력 두 번째 옵션
+    string additional_potential_option_3 = 20; // 에디셔널 잠재능력 세 번째 옵션
+    int64 equipment_level_increase = 21; // 착용 레벨 증가
+    ItemExceptionalOption item_exceptional_option = 22; // 장비 특별 옵션 정보
+    ItemAddOption item_add_option = 23; // 장비 추가 옵션
+    int64 growth_exp = 24; // 성장 경험치
+    int64 growth_level = 25; // 성장 레벨
+    string scroll_upgrade = 26; // 주문서 횟수
+    string cuttable_count = 27; // 가위 사용 가능 횟수 (교환 불가 장비, 가위 횟수가 없는 교환 가능 장비는 255)
+    string golden_hammer_flag = 28; // 황금 망치 재련 적용 (1:적용, 이외 미 적용)
+    string scroll_resilience_count = 29; // 복구 가능 횟수
+    string scroll_upgrade_able_count = 30; // 주문서 잔여 횟수
+    string soul_name = 31; // 소울 명
+    string soul_option = 32; // 소울 옵션
+    ItemEtcOption item_etc_option = 33; // 장비 기타 옵션 정보
+    string starforce = 34; // 강화 단계
+    string starforce_scroll_flag = 35; // 놀라운 장비 강화 주문서 사용 여부 (0:미사용, 1:사용)
+    ItemStarforceOption item_starforce_option = 36; // 장비 스타포스 옵션 정보
+    int64 special_ring_level = 37; // 특수 반지 레벨
+    string date_expire = 38; // 장비 유효 기간(KST)
+    string freestyle_flag = 39; // 프리스타일 쿠폰 적용 여부 (0:미적용, 1:적용)
+}
+
+message ItemTotalOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    string armor = 9; // 방어력
+    string speed = 10; // 이동속도
+    string jump = 11; // 점프력
+    string boss_damage = 12; // 보스 몬스터 데미지 증가 (%)
+    string ignore_monster_armor = 13; // 몬스터 방어율 무시(%)
+    string all_stat = 14; // 올스탯(%)
+    string damage = 15; // 데미지(%)
+    int64 equipment_level_decrease = 16; // 착용 레벨 감소
+    string max_hp_rate = 17; // 최대 HP(%)
+    string max_mp_rate = 18; // 최대 MP(%)
+}
+
+message ItemBaseOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    string armor = 9; // 방어력
+    string speed = 10; // 이동속도
+    string jump = 11; // 점프력
+    string boss_damage = 12; // 보스 몬스터 데미지 증가 (%)
+    string ignore_monster_armor = 13; // 몬스터 방어율 무시(%)
+    string all_stat = 14; // 올스탯(%)
+    string max_hp_rate = 15; // 최대 HP(%)
+    string max_mp_rate = 16; // 최대 MP(%)
+    int64 base_equipment_level = 17; // 기본 착용 레벨
+}
+
+message ItemExceptionalOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    int64 exceptional_upgrade = 9; // 익셉셔널 강화 적용 횟수
+}
+
+message ItemAddOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    string armor = 9; // 방어력
+    string speed = 10; // 이동속도
+    string jump = 11; // 점프력
+    string boss_damage = 12; // 보스 몬스터 데미지 증가 (%)
+    string damage = 13; // 데미지(%)
+    string all_stat = 14; // 올스탯(%)
+    int64 equipment_level_decrease = 15; // 착용 레벨 감소
+}
+
+message ItemEtcOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    string armor = 9; // 방어력
+    string speed = 10; // 이동속도
+    string jump = 11; // 점프력
+}
+
+message ItemStarforceOption {
+    string str = 1; // STR
+    string dex = 2; // DEX
+    string int = 3; // INT
+    string luk = 4; // LUK
+    string max_hp = 5; // 최대 HP
+    string max_mp = 6; // 최대 MP
+    string attack_power = 7; // 공격력
+    string magic_power = 8; // 마력
+    string armor = 9; // 방어력
+    string speed = 10; // 이동속도
+    string jump = 11; // 점프력
+}
+
+message Title {
+    string title_name = 1; // 칭호 장비 명
+    string title_icon = 2; // 칭호 아이콘
+    string title_description = 3; // 칭호 설명
+    string date_expire = 4; // 칭호 유효 기간 (KST)
+    string date_option_expire = 5; // 칭호 옵션 유효 기간 (expired:만료, null:무제한) (KST)
+    string title_shape_name = 6; // 외형 설정에 등록한 칭호 장비 명
+    string title_shape_icon = 7; // 외형 설정에 등록한 칭호 아이콘
+    string title_shape_description = 8; // 외형 설정에 등록한 칭호 설명
+}
+
+message SetEffectObject {
+    repeated SetEffect set_effect = 1; // 세트 효과 정보
+}
+
+message SetEffect {
+    string set_name = 1; // 세트 효과 명
+    int64 total_set_count = 2; // 세트 개수 (럭키 아이템 포함)
+    repeated SetEffectInfo set_effect_info = 3; // 적용 중인 세트 효과 정보
+}
+
+message SetEffectInfo {
+    int64 set_count = 1; // 세트 효과 레벨 (장비 수)
+    string set_option = 2; // 세트 효과
+}
+
+message CashItemObject {
+    repeated CashItem cash_item_equipment_base = 1; // 장착 중인 캐시 장비
+    repeated CashItem additional_cash_item_equipment_base = 2; // 제로인 경우 베타, 엔젤릭버스터인 경우 드레스 업 모드에서 장착 중인 캐시 장비
+}
+
+message CashItem {
+    string cash_item_equipment_part = 1; // 캐시 장비 부위 명
+    string cash_item_equipment_slot = 2; // 캐시 장비 슬롯 위치
+    string cash_item_name = 3; // 캐시 장비 명
+    string cash_item_icon = 4; // 캐시 장비 아이콘
+    string cash_item_description = 5; // 캐시 장비 설명
+    repeated CashItemOption cash_item_option = 6; // 캐시 장비의 옵션
+    string date_expire = 7; // 캐시 장비 유효 기간 (KST)
+    string date_option_expire = 8; // 캐시 장비 옵션 유효 기간 (KST, 시간 단위 데이터로 분은 일괄 0으로 표기)
+}
+
+message CashItemOption {
+    string option_type = 1; // 옵션 타입
+    string option_value = 2; // 옵션 값
+}
+
+message PetObject {
+    string pet_1_name = 1; // 펫1 명
+    string pet_1_nickname = 2; // 펫1 닉네임
+    string pet_1_icon = 3; // 펫1 아이콘
+    string pet_1_description = 4; // 펫1 설명
+    PetEquipment pet_1_equipment = 5; // 펫1 장착 정보
+    PetAutoSkill pet_1_auto_skill = 6; // 펫1 버프 자동스킬 정보
+    string pet_1_pet_type = 7; // 펫1 원더 펫 종류
+    repeated string pet_1_skill = 8; // 펫1 펫 보유 스킬
+    string pet_1_date_expire = 9; // 펫1 마법의 시간 (KST, 시간 단위 데이터로 분은 일괄 0으로 표기)
+    string pet_2_name = 10; // 펫2 명
+    string pet_2_nickname = 11; // 펫2 닉네임
+    string pet_2_icon = 12; // 펫2 아이콘
+    string pet_2_description = 13; // 펫2 설명
+    PetEquipment pet_2_equipment = 14; // 펫2 장착 정보
+    PetAutoSkill pet_2_auto_skill = 15; // 펫2 버프 자동스킬 정보
+    string pet_2_pet_type = 16; // 펫2 원더 펫 종류
+    repeated string pet_2_skill = 17; // 펫2 펫 보유 스킬
+    string pet_2_date_expire = 18; // 펫2 마법의 시간 (KST, 시간 단위 데이터로 분은 일괄 0으로 표기)
+    string pet_3_name = 19; // 펫3 명
+    string pet_3_nickname = 20; // 펫3 닉네임
+    string pet_3_icon = 21; // 펫3 아이콘
+    string pet_3_description = 22; // 펫3 설명
+    PetEquipment pet_3_equipment = 23; // 펫3 장착 정보
+    PetAutoSkill pet_3_auto_skill = 24; // 펫3 버프 자동스킬 정보
+    string pet_3_pet_type = 25; // 펫3 원더 펫 종류
+    repeated string pet_3_skill = 26; // 펫3 펫 보유 스킬
+    string pet_3_date_expire = 27; // 펫2 마법의 시간 (KST, 시간 단위 데이터로 분은 일괄 0으로 표기)
+}
+
+message PetEquipment {
+    string item_name = 1; // 아이템 명
+    string item_icon = 2; // 아이템 아이콘
+    string item_description = 3; // 아이템 설명
+    repeated CashItemOption item_option = 4; // 아이템의 표기상 옵션
+    int64 scroll_upgrade = 5; // 주문서 횟수
+    int64 scroll_upgradable = 6; // 주문서 잔여 횟수
+    string item_shape = 7; // 아이템 외형
+    string item_shape_icon = 8; // 아이템 외형 아이콘
+    string item_date_expire = 9; // 아이템 만료시간
+}
+
+message PetAutoSkill {
+    string skill_1 = 1; // 첫 번째 슬롯에 등록된 자동 스킬 명
+    string skill_1_icon = 2; // 첫 번째 슬롯에 등록된 자동 스킬의아이콘
+    string skill_2 = 3; // 두 번째 슬롯에 등록된 자동 스킬 명
+    string skill_2_icon = 4; // 두 번째 슬롯에 등록된 자동 스킬 아이콘
+}
+
+message SkillObject {
+    repeated CharacterSkill character_skill = 1; // 스킬 정보
+}
+
+message CharacterSkill {
+    string skill_name = 1; // 스킬 명
+    string skill_description = 2; // 스킬 설명
+    int64 skill_level = 3; // 스킬 레벨
+    string skill_effect = 4; // 스킬 레벨 별 효과 설명
+    string skill_icon = 5; // 스킬 아이콘
+}
+
+message LinkSkillObject {
+    repeated CharacterLinkSkill character_link_skill = 1; // 링크 스킬 정보
+    CharacterLinkSkill character_owned_link_skill = 2; // 내 링크 스킬 정보
+}
+
+message CharacterLinkSkill {
+    string skill_name = 1; // 스킬 명
+    string skill_description = 2; // 스킬 설명
+    int64 skill_level = 3; // 스킬 레벨
+    string skill_effect = 4; // 스킬 효과
+    string skill_icon = 5; // 스킬 아이콘
+}
+
+message VMatrixObject {
+    repeated VCore character_v_core_equipment = 1; // V코어 정보
+}
+
+message VCore {
+    string slot_id = 1; // 슬롯 인덱스
+    int64 slot_level = 2; // 슬롯 레벨
+    string v_core_name = 3; // 코어 명
+    string v_core_type = 4; // 코어 타입
+    int64 v_core_level = 5; // 코어의 레벨
+    string v_core_skill_1 = 6; // 코어에 해당하는 스킬 명
+    string v_core_skill_2 = 7; // (강화 코어인 경우) 코어에 해당하는 두 번째 스킬 명
+    string v_core_skill_3 = 8; // (강화 코어인 경우) 코어에 해당하는 세 번째 스킬 명
+}
+
+message HexaMatrixObject {
+    HexaCoreObject hexa_core_object = 1; // HEXA 매트릭스 코어 정보
+    HexaMatrixStatObject hexa_matrix_stat_object = 2; // HEXA 매트릭스 스탯 정보
+}
+
+message HexaCoreObject {
+    repeated HexaCore character_hexa_core_equipment = 1; // HEXA 코어 정보
+}
+
+message HexaCore {
+    string hexa_core_name = 1; // 코어 명
+    int64 hexa_core_level = 2; // 코어 레벨
+    string hexa_core_type = 3; // 코어 타입
+    repeated HexaLinkedSkill linked_skill = 4; // 연결된 스킬
+}
+
+message HexaLinkedSkill {
+    string hexa_skill_id = 1; // HEXA 스킬 명
+}
+
+message HexaMatrixStatObject {
+    repeated HexaStatCore character_hexa_stat_core = 1; // HEXA 스탯 I 코어 정보
+    repeated HexaStatCore character_hexa_stat_core_2 = 2; // HEXA 스탯 II 코어 정보
+    repeated HexaStatCore character_hexa_stat_core_3 = 3; // HEXA 스탯 III 코어 정보
+}
+
+message HexaStatCore {
+    string slot_id = 1; // 슬롯 인덱스
+    string main_stat_name = 2; // 메인 스탯 명
+    string sub_stat_name_1 = 3; // 첫 번째 서브 명
+    string sub_stat_name_2 = 4; // 두 번째 서브 명
+    double main_stat_level = 5; // 메인 스탯 레벨
+    double sub_stat_level_1 = 6; // 첫 번째 서브 레벨
+    double sub_stat_level_2 = 7; // 두 번째 서브 레벨
+    double stat_grade = 8; // 스텟 코어 등급
+}
+
+message RingReserveSkillObject {
+    string special_ring_reserve_name = 1; // 예비 특수 반지 슬롯에 장착한 특수 반지
+    int64 special_ring_reserve_level = 2; // 예비 특수 반지 슬롯에 장착한 특수 반지 레벨
+    string special_ring_reserve_icon = 3; // 예비 특수 반지 슬롯에 장착한 특수 반지 아이콘
+    string special_ring_reserve_description = 4; // 예비 특수 반지 슬롯에 장착한 특수 반지 설명
+}
+
+message UnionRaiderObject {
+    repeated string union_raider_stat = 1; // 유니온 공격대원 효과
+    repeated string union_occupied_stat = 2; // 유니온 공격대 점령 효과
+}
+
+message UnionArtifactObject {
+    repeated UnionArtifactEffect union_artifact_effect = 1; // 아티팩트 효과 정보
+}
+
+message UnionArtifactEffect {
+    string name = 1; // 아티팩트 효과 명
+    double level = 2; // 아티팩트 효과 레벨
+}
+
+message UnionChampionObject {
+    repeated UnionChampionBadge champion_badge_total_info = 1; // 유니온 챔피언 휘장
+}
+
+message UnionChampionBadge {
+    string stat = 1; // 유니온 챔피언 휘장 효과
+}
+
+message GuildObject {
+    repeated GuildSkill guild_skill = 1; // 길드 스킬 목록
+    repeated GuildSkill guild_noblesse_skill = 2; // 노블레스 스킬 목록
+}
+
+message GuildSkill {
+    string skill_name = 1; // 스킬 명
+    string skill_description = 2; // 스킬 설명
+    double skill_level = 3; // 스킬 레벨
+    string skill_effect = 4; // 스킬 레벨별 효과
+    string skill_icon = 5; // 스킬 아이콘
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// SkillTimeline
+// 스킬 타임라인 응답 데이터 구조
+message SkillTimeline {
+    int64 page_no = 1; // 조회된 페이지 번호
+    int64 total_page_no = 2; // 전체 페이지 번호
+    repeated TimelineEntry skill_timeline = 3; // 스킬 타임라인 정보
+}
+
+message TimelineEntry {
+    int64 elapse_time = 1; // 연무 시작 후 경과 시간 (ms)
+    string skill_name = 2; // 사용 스킬 명
+    string hexa_skill_specificity_flag = 3; // 헥사 스킬 특성 여부 (0:그 외 스킬, 1:오리진 스킬, 2:어센트 스킬)
+    string sequence_name = 4; // 시퀀스 명
+    string sequence_key = 5; // 시퀀스 키
+}

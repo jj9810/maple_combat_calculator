@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// ErrorMessage
+// API 오류 응답 데이터 구조
+message ErrorMessage {
+    ErrorDetail error = 1;
+}
+
+message ErrorDetail {
+    string name = 1;
+    string message = 2;
+}

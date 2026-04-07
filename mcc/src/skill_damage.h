@@ -5,6 +5,8 @@
 #ifndef MCC_SKILL_DAMAGE_H
 #define MCC_SKILL_DAMAGE_H
 
+#include "shared/proto/mcc_stat.pb.h"
+
 constexpr long long DEFAULT_MAX_DAMAGE = 700000000000;
 
 #define MAX_DAMAGE_CAP true
@@ -16,7 +18,24 @@ constexpr double CRIT_RATIO_MAX = 1.5;
 constexpr double MOB_ELEM_RES = 0.5;
 
 /**
+ * 공식 API 기반의 MCCStat을 사용하여 스킬 데미지를 계산합니다.
+ */
+long long calcSkillDamage(
+    double skillDamage,
+    const maple_combat_calculator::shared::MCCStat& stat,
+    int mainStatType, // CharacterInfo.StatType enum 값
+    double mastery,
+    double mobDefense,
+    double mobElemRes,
+    double weaponConst
+);
+
+/**
  * 스킬의 최종 데미지를 계산하는 가장 기본적인 함수
+ * Reference:
+ *  https://www.inven.co.kr/board/maple/2299/5679951
+ *  https://github.com/oleneyl/maplestory_dpm_calc/blob/e7d05a772e5e4935c3c27c56864b5c1f2a380137/dpmModule/kernel/core.py
+ * @return expected damage in integer format
  */
 long long calcSkillDamageRaw(
     // 스킬 기본 정보
@@ -25,7 +44,7 @@ long long calcSkillDamageRaw(
     double mainStat,
     double subStat,
     double attack,
-    double expert,
+    double mastery,
     // 데미지 관련 스탯
     double damagePercent,
     double finalDamagePercent,
@@ -51,7 +70,7 @@ long long calcSkillDamage(
     double mainStat,
     double subStat,
     double attack,
-    double expert,
+    double mastery,
     // 데미지 관련 스탯
     double damagePercent,
     double finalDamagePercent,
@@ -93,7 +112,7 @@ long long applyMaxDamageCorrection(
     long long averageDamage,
     double maxDamageVal,
     double critDamagePercent,
-    double expert,
+    double mastery,
     bool isCrit
 );
 

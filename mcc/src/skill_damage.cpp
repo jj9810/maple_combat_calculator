@@ -2,8 +2,8 @@
 // Created by ubuntu on 25. 8. 10..
 //
 
-#include "skill_damage.h"
-#include "combat_power.h"
+#include "../inc/skill_damage.h"
+#include "../inc/combat_power.h"
 #include <cmath>
 
 long long calcSkillDamage(
@@ -13,7 +13,9 @@ long long calcSkillDamage(
     double mastery,
     double mobDefense,
     double mobElemRes,
-    double weaponConst
+    double weaponConst,
+    double levelAdjust,
+    double forceAdjust
 ) {
     // StatType 로직을 사용하여 필요한 스탯을 매핑합니다.
     MappedStats mapped = mapStatType(stat, mainStatType);
@@ -34,7 +36,9 @@ long long calcSkillDamage(
         stat.elemental_resistance_ignore(), // stat 내부의 속성 내성 무시 사용
         mobDefense,
         mobElemRes,                         // 매개변수로 받은 몬스터 속성 저항 사용
-        weaponConst
+        weaponConst,
+        levelAdjust,
+        forceAdjust
     );
 }
 
@@ -144,7 +148,9 @@ long long calcSkillDamageRaw(
     double mobDefense,
     double mobElemRes,
     // 기타
-    double weaponConst
+    double weaponConst,
+    double levelAdjust,
+    double forceAdjust
 )
 {
     // (주스텟*4 + 부스텟) / 100
@@ -160,7 +166,8 @@ long long calcSkillDamageRaw(
 
     double maxDamageVal = skillDamage * statRatio * weaponConst * attack *
                damageRatio * finalDamageRatio *
-               defenseRatio * elementalRatio;
+               defenseRatio * elementalRatio *
+               levelAdjust * forceAdjust;
 
     long long averageDamageCrit = calcAverageSkillDamage(maxDamageVal, mastery, critDamagePercent, true);
     long long averageDamageNonCrit = calcAverageSkillDamage(maxDamageVal, mastery, 0, false);
@@ -194,7 +201,9 @@ long long calcSkillDamage(
     double elementalAdjust,
     double mobDefense,
     // 기타
-    double weaponConst
+    double weaponConst,
+    double levelAdjust,
+    double forceAdjust
 )
 {
     return calcSkillDamageRaw(
@@ -211,7 +220,9 @@ long long calcSkillDamage(
         elementalAdjust,
         mobDefense,
         MOB_ELEM_RES,       // mobElemRes: 상수 값 사용
-        weaponConst
+        weaponConst,
+        levelAdjust,
+        forceAdjust
     );
 }
 

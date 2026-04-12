@@ -1,4 +1,4 @@
-#include "combat_power.h"
+#include "../inc/combat_power.h"
 #include <cmath>
 #include <algorithm>
 

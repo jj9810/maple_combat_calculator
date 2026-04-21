@@ -1,0 +1,378 @@
+# 아델(Adele) 전체 스킬 데이터 - 다단계 액션 구조 및 모든 스킬 복구 완료
+class: "Adele"
+skills:
+  # --- 주요 공격기 및 4차/HEXA 강화 (마스터리 코어) ---
+  - name: "Divide"
+    display_name: "디바이드"
+    type: "attack"
+    delay: 0.63
+    actions:
+      - name: "divide_hit"
+        damage: 375
+        hit: 6
+    hexa_upgrade:
+      name: "Divide VI"
+      display_name: "디바이드 VI"
+      growth: { slope: 20, intercept: 375 }
+      special: { 10: { ignore_defense: 20 }, 20: { boss_damage: 20 }, 30: { ignore_defense: 30, boss_damage: 30 } }
+
+  - name: "Shard"
+    display_name: "샤드"
+    type: "attack"
+    delay: 0.5
+    actions:
+      - name: "shard_hit"
+        damage: 400
+        hit: 3
+    hexa_upgrade:
+      name: "Shard VI"
+      display_name: "샤드 VI"
+      growth: { slope: 10.6, intercept: 400 }
+
+  - name: "Wonder"
+    display_name: "원더"
+    type: "attack"
+    delay: 0.5
+    actions:
+      - name: "wonder_hit"
+        damage: 400
+        hit: 3
+    hexa_upgrade:
+      name: "Wonder VI"
+      display_name: "원더 VI"
+      growth: { slope: 10.6, intercept: 400 }
+
+  - name: "Gathering"
+    display_name: "게더링"
+    type: "attack"
+    cooldown: 12.0
+    actions:
+      - name: "gathering_hit"
+        damage: 260
+        hit: 4
+    hexa_upgrade:
+      name: "Gathering VI"
+      display_name: "게더링 VI"
+      growth: { slope: 22, intercept: 260 }
+
+  - name: "Blossom"
+    display_name: "블로섬"
+    type: "attack"
+    cooldown: 12.0
+    actions:
+      - name: "blossom_hit"
+        damage: 650
+        hit: 8
+    hexa_upgrade:
+      name: "Blossom VI"
+      display_name: "블로섬 VI"
+      growth: { slope: 22.3, intercept: 650 }
+
+  - name: "Impale"
+    display_name: "임페일"
+    type: "attack"
+    actions:
+      - name: "impale_hit"
+        damage: 200
+        hit: 2
+    hexa_upgrade:
+      name: "Impale VI"
+      display_name: "임페일 VI"
+      growth: { slope: 21.8, intercept: 200 }
+
+  - name: "Resonance"
+    display_name: "레조넌스"
+    type: "attack"
+    actions:
+      - name: "resonance_hit"
+        damage: 250
+        hit: 3
+    hexa_upgrade:
+      name: "Resonance VI"
+      display_name: "레조넌스 VI"
+      growth: { slope: 23, intercept: 250 }
+
+  - name: "Marker"
+    display_name: "마커"
+    type: "attack"
+    cooldown: 60.0
+    actions:
+      - name: "marker_hit"
+        damage: 500
+        hit: 3
+    hexa_upgrade:
+      name: "마커 VI"
+      display_name: "마커 VI"
+      growth: { slope: 33.3, intercept: 500 }
+
+  - name: "Territory"
+    display_name: "테리토리"
+    type: "summon"
+    duration: 7.0
+    cooldown: 30.0
+    actions:
+      - name: "territory_hit"
+        damage: 400
+        hit: 4
+        interval: 1.0
+    hexa_upgrade:
+      name: "테리토리 VI"
+      display_name: "테리토리 VI"
+      growth: { slope: 23.3, intercept: 400 }
+
+  - name: "Creation"
+    display_name: "크리에이션"
+    type: "attack"
+    actions:
+      - name: "creation_hit"
+        damage: 600
+        hit: 6
+    hexa_upgrade:
+      name: "크리에이션 VI"
+      display_name: "크리에이션 VI"
+      growth: { slope: 21.6, intercept: 600 }
+
+  - name: "Tread"
+    display_name: "트레드"
+    type: "attack"
+    actions:
+      - name: "tread_hit"
+        damage: 500
+        hit: 6
+    hexa_upgrade:
+      name: "트레드 VI"
+      display_name: "트레드 VI"
+      growth: { slope: 13.3, intercept: 500 }
+
+  - name: "Order"
+    display_name: "오더"
+    type: "summon"
+    duration: 40.0
+    actions:
+      - name: "order_hit"
+        damage: 240
+        hit: 2
+        interval: 1.0
+    hexa_upgrade:
+      name: "오더 VI"
+      display_name: "오더 VI"
+      growth: { slope: 13, intercept: 240 }
+
+  # --- 5차 스킬 및 강화 코어 ---
+  - name: "Ruin"
+    display_name: "루인"
+    type: "attack"
+    cooldown: 60.0
+    actions:
+      - name: "initial_impact"
+        damage: 500
+        hit: 6
+        repeat: 6
+        interval: 0.1
+      - name: "collapse"
+        damage: 900
+        hit: 9
+        repeat: 8
+        interval: 0.2
+        delay: 0.6
+    hexa_upgrade:
+      name: "루인 강화"
+      display_name: "루인 강화"
+      growth: { final_damage_slope: 1.7, final_damage_intercept: 11 }
+
+  - name: "Infinite"
+    display_name: "인피니트"
+    type: "attack"
+    duration: 30.0
+    cooldown: 180.0
+    actions:
+      - name: "ether_sword"
+        damage: 700
+        hit: 2
+        interval: 0.12
+    hexa_upgrade:
+      name: "인피니트 강화"
+      display_name: "인피니트 강화"
+      growth: { final_damage_slope: 1.7, final_damage_intercept: 11 }
+
+  - name: "Restore"
+    display_name: "리스토어"
+    type: "buff"
+    duration: 30.0
+    cooldown: 180.0
+    effects:
+      final_damage: 10
+    hexa_upgrade:
+      name: "리스토어 강화"
+      display_name: "리스토어 강화"
+      growth: { final_damage_slope: 1.7, final_damage_intercept: 11 }
+
+  - name: "Storm"
+    display_name: "스톰"
+    type: "attack"
+    duration: 40.0
+    cooldown: 90.0
+    actions:
+      - name: "sword_strike"
+        damage: 500
+        hit: 1
+        interval: 0.5
+        max_instances: 24
+    hexa_upgrade:
+      name: "스톰 강화"
+      display_name: "스톰 강화"
+      growth: { final_damage_slope: 1.7, final_damage_intercept: 11 }
+
+  # --- 6차 오리진 스킬 ---
+  - name: "Maestro"
+    display_name: "마에스트로"
+    type: "origin"
+    cooldown: 360.0
+    actions:
+      - name: "slash"
+        damage: 3600
+        hit: 8
+        repeat: 10
+        interval: 0.1
+      - name: "finish"
+        damage: 6500
+        hit: 14
+        repeat: 12
+        interval: 0.15
+        delay: 1.5
+    special: { 10: { ignore_defense: 20 }, 20: { boss_damage: 20 }, 30: { ignore_defense: 30, boss_damage: 30 } }
+
+  # --- 버프 및 유틸리티 스킬 ---
+  - name: "GrandisGoddessBlessing"
+    display_name: "그란디스 여신의 축복"
+    type: "buff"
+    duration: 40.0
+    cooldown: 240.0
+    effects:
+      damage: 35
+
+  - name: "RaceOfGod"
+    display_name: "레이스 오브 갓"
+    type: "buff"
+    duration: 60.0
+    cooldown: 120.0
+    effects:
+      damage: 10
+
+  - name: "MagicCircuitFullDrive"
+    display_name: "매직 서킷 풀드라이브"
+    type: "buff"
+    duration: 60.0
+    cooldown: 200.0
+    effects:
+      damage: 45
+
+  - name: "SoulContract"
+    display_name: "소울 컨트랙트"
+    type: "buff"
+    duration: 10.0
+    cooldown: 90.0
+    effects:
+      damage: 45
+
+  - name: "AuraWeapon"
+    display_name: "오라 웨폰"
+    type: "buff"
+    duration: 140.0
+    cooldown: 180.0
+    effects:
+      ignore_defense: 15
+      final_damage: 6
+
+  - name: "Grave"
+    display_name: "그레이브"
+    type: "debuff"
+    duration: 30.0
+    cooldown: 10.0
+    effects:
+      damage: 4
+
+  - name: "Dike"
+    display_name: "다이크"
+    type: "buff"
+    duration: 4.0
+    cooldown: 60.0
+
+  - name: "Booster"
+    display_name: "부스터"
+    type: "buff"
+    duration: 200.0
+
+  - name: "BodyOfSteel"
+    display_name: "바디 오브 스틸"
+    type: "buff"
+    duration: 35.0
+    cooldown: 120.0
+    effects:
+      damage: 9
+
+  - name: "Einherjar"
+    display_name: "아인하이트"
+    type: "buff"
+    duration: 30.0
+    hexa_upgrade:
+      name: "아인하이트"
+      display_name: "아인하이트"
+      growth: { slope: 20, intercept: 1000 }
+
+  - name: "RingOfRestraint"
+    display_name: "리스트레인트 링"
+    type: "buff"
+    duration: 15.0
+    cooldown: 180.0
+    effects:
+      attack_power: 100
+
+  # --- 공용 공격 스킬 ---
+  - name: "SpiderInMirror"
+    display_name: "스파이더 인 미러"
+    type: "attack"
+    cooldown: 250.0
+    actions:
+      - name: "initial"
+        damage: 1200
+        hit: 12
+      - name: "break"
+        damage: 450
+        hit: 8
+        delay: 1.0
+
+  - name: "CrestOfTheSolar"
+    display_name: "크레스트 오브 더 솔라"
+    type: "attack"
+    cooldown: 250.0
+    actions:
+      - name: "initial"
+        damage: 1000
+        hit: 10
+      - name: "emblem"
+        damage: 500
+        hit: 5
+        interval: 2.1
+
+  - name: "SolJanus"
+    display_name: "솔 야누스"
+    type: "summon"
+    duration: 100.0
+    actions:
+      - name: "dawn"
+        damage: 800
+        hit: 6
+        interval: 3.0
+    hexa_upgrade:
+      name: "솔 야누스"
+      display_name: "솔 야누스"
+      growth: { slope: 25, intercept: 800 }
+
+  - name: "SolHecateStyx"
+    display_name: "솔 헤카테 : 스틱스"
+    type: "attack"
+    actions:
+      - name: "slash"
+        damage: 1500
+        hit: 15

@@ -5,11 +5,17 @@
 .idea.shelf/
 .idea/cmake_ws/
 
-# CMake build directories (ignore the entire build folder)
+# CMake build directories
+build/
 cmake-build-*/
 CMakeLists.txt.user.*
 
+# Protobuf generated files
+*.pb.h
+*.pb.cc
+
 # Executables, object files, and libraries
+bin/
 *.o
 *.a
 *.lib
@@ -17,6 +23,7 @@ CMakeLists.txt.user.*
 *.dylib
 *.exe
 *.dll
+*.bin
 
 # Dependency management files (e.g., vcpkg)
 vcpkg/

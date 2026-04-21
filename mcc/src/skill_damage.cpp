@@ -20,6 +20,9 @@ long long calcSkillDamage(
     // StatType 로직을 사용하여 필요한 스탯을 매핑합니다.
     MappedStats mapped = mapStatType(stat, mainStatType);
 
+    // 매개변수로 받은 몬스터 속성 저항 사용 (없으면 기본값 적용)
+    double finalMobElemRes = (mobElemRes > 0) ? mobElemRes : MOB_ELEM_RES;
+
     // 공식 API 기반의 MCCStat은 이미 최종 합산된 값을 제공하므로,
     // 기존의 복잡한 개별 파라미터 대신 필요한 필드를 직접 추출하여 계산합니다.
     return calcSkillDamageRaw(
@@ -32,10 +35,10 @@ long long calcSkillDamage(
         stat.final_damage(),
         stat.critical_chance(),
         stat.critical_damage(),
-        stat.ignore_defense(),
+        stat.ignore_defense(), // MCM에서 이미 합산된 값을 사용
         stat.elemental_resistance_ignore(), // stat 내부의 속성 내성 무시 사용
         mobDefense,
-        mobElemRes,                         // 매개변수로 받은 몬스터 속성 저항 사용
+        finalMobElemRes,
         weaponConst,
         levelAdjust,
         forceAdjust
@@ -219,7 +222,7 @@ long long calcSkillDamage(
         ignoreDefense,
         elementalAdjust,
         mobDefense,
-        MOB_ELEM_RES,       // mobElemRes: 상수 값 사용
+        MOB_ELEM_RES,       // 기본값 사용
         weaponConst,
         levelAdjust,
         forceAdjust
@@ -258,6 +261,8 @@ long long calcDotDamage(
         elementalAdjust,
         mobDefense,
         mobElemRes,
-        weaponConst
+        weaponConst,
+        1.0,                // TODO: verify levelAdjust for DOT
+        1.0                 // TODO: verify forceAdjust for DOT
     );
 }

@@ -5,7 +5,7 @@
 #ifndef MCC_SKILL_DAMAGE_H
 #define MCC_SKILL_DAMAGE_H
 
-#include "shared/proto/mcc_stat.pb.h"
+#include "internal/mcc_stat.pb.h"
 
 constexpr long long DEFAULT_MAX_DAMAGE = 700000000000;
 
@@ -18,7 +18,7 @@ constexpr double CRIT_RATIO_MAX = 1.5;
 constexpr double MOB_ELEM_RES = 0.5;
 
 /**
- * 공식 API 기반의 MCCStat을 사용하여 스킬 데미지를 계산합니다.
+ * 공식 API 기반의 Stat을 사용하여 스킬 데미지를 계산합니다.
  */
 long long calcSkillDamage(
     double skillDamage,

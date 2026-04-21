@@ -1,0 +1,9 @@
+{
+  "name": "maple-combat-calculator",
+  "version": "0.1.0",
+  "dependencies": [
+    "curl",
+    "protobuf",
+    "yaml-cpp"
+  ]
+}

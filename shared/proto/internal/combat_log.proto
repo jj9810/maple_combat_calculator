@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+import "nexon/battle_practice_character_info.proto";
+import "nexon/battle_practice_result.proto";
+import "internal/mcc_stat.proto";
+import "google/protobuf/struct.proto";
+
+// Event는 전투 중 발생하는 최소 단위 행동입니다.
+message Event {
+    enum Method {
+        OTHER = 0;
+        DAMAGE = 1;
+        BUFF = 2;
+        DOT = 3;
+    }
+    Method method = 1;
+    string name = 2;
+    double damage = 3; // 스킬 퍼뎀 (%)
+    int32 hit = 4;     // 타수 또는 적용 여부 (1: 적용, 0: 해제)
+    google.protobuf.Struct payload = 5; // 버프 스탯 정보 등
+}
+
+// Action은 시뮬레이션 엔진이 결정한 고수위 행동(스킬 사용 등)입니다.
+message Action {
+    string skill_name = 1;
+    double cast_duration = 2; // 시전 시간(딜레이)
+}
+
+// PlayLog는 특정 시점(Clock)에 발생한 이벤트들의 묶음입니다.
+message PlayLog {
+    double clock = 1;
+    repeated Event events = 2;
+}
+
+// OperationLog는 일련의 PlayLog들을 담는 단위입니다.
+message OperationLog {
+    repeated PlayLog play_logs = 1;
+}
+
+// CharacterInfo는 시뮬레이션에 필요한 캐릭터의 핵심 정보입니다.
+message CharacterInfo {
+    int32 level = 1;
+    int32 main_stat_type = 2; // 1:STR, 2:DEX, 3:INT, 4:LUK, 5:LUK(DB), 6:ALL(Xenon), 7:HP(DA)
+    double weapon_constant = 3;
+}
+
+// CombatLog는 전체 전투 시뮬레이션 데이터를 담는 통합 규격입니다.
+message CombatLog {
+    // 기초 데이터
+    CharacterBaseStat base_stat = 1;
+    CharacterInfo character_info = 2;
+    MonsterInfo monster_info = 3;
+    
+    // 시뮬레이션 기록
+    repeated OperationLog operation_logs = 4;
+    
+    // 최종 결과 요약 (필요 시)
+    BattlePracticeResult result = 5;
+    BattlePracticeCharacterInfo raw_character_info = 6; // 원본 데이터 보관용
+}
+
+
+// CharacterBaseStat은 캐릭터 입장 시점의 기본 스탯입니다.
+message CharacterBaseStat {
+    MCCStat stat = 1;
+}
+
+// MonsterInfo는 전투 대상 몬스터(보스)의 정보입니다.
+message MonsterInfo {
+    string name = 1;
+    int32 level = 2;
+    double defense_rate = 3;
+    bool is_boss = 4;
+    int32 required_arcaneforce = 5;
+    int32 required_authenticforce = 6;
+    double elemental_resistance = 7;
+}

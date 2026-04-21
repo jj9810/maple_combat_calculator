@@ -1,7 +1,7 @@
 #ifndef MCC_LIBRARY_H
 #define MCC_LIBRARY_H
 
-#include "shared/proto/mcc_stat.pb.h"
+#include "internal/mcc_stat.pb.h"
 
 /***
  *
@@ -26,7 +26,7 @@ struct MappedStats {
 };
 
 /**
- * MCCStat과 StatType을 기반으로 주스탯, 부스탯, 공격력/마력을 매핑합니다.
+ * Stat과 StatType을 기반으로 주스탯, 부스탯, 공격력/마력을 매핑합니다.
  */
 MappedStats mapStatType(
     const maple_combat_calculator::shared::MCCStat& stat,
@@ -34,7 +34,7 @@ MappedStats mapStatType(
 );
 
 /**
- * 공식 API 기반의 MCCStat과 무기 및 기본 제공(innate) 수치를 입력으로 받아 전투력을 계산합니다.
+ * 공식 API 기반의 Stat과 무기 및 기본 제공(innate) 수치를 입력으로 받아 전투력을 계산합니다.
  */
 int calculateCombatPower(
     const maple_combat_calculator::shared::MCCStat& stat,

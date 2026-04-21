@@ -1,0 +1,18 @@
+# 아델 행동 규칙(딜 사이클) 예시
+policy:
+  # 오프닝 빌드 (전투 시작 시 순서대로 사용)
+  opening:
+    - "Restore"
+    - "Infinite"
+
+  # 우선순위 기반 딜 사이클 (쿨타임이 돌면 위에서부터 사용)
+  priority:
+    - "Ruin"
+    - "Infinite"
+    - "Restore"
+    - "Divide" # 주력기 (가장 마지막)
+
+  # 조건부 규칙 (추후 확장용)
+  # conditions:
+  #   - if: "buff.Infinite.is_active"
+  #     then: "use_skill(SpecialAttack)"

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package maple_combat_calculator.shared;
+
+// MCCStat 메시지는 모든 보정치가 계산 완료된 최종 스탯 정보를 담습니다.
+// MCM에서 최종 합산된 후 MCC의 연산 함수로 전달됩니다.
+message MCCStat {
+    // 기본 능력치 (최종 합산값)
+    double str = 1;
+    double dex = 2;
+    double int = 3;
+    double luk = 4;
+    double hp = 5;
+    double mp = 6;
+
+    // 공격 능력치 (최종 합산값)
+    double attack_power = 7;
+    double magic_power = 8;
+    
+    // 데미지 및 보정치 (%)
+    double damage = 9;
+    double boss_damage = 10;
+    double final_damage = 11;
+    double ignore_defense = 12; // 최종 합산 방무 (%)
+    double critical_chance = 13;
+    double critical_damage = 14;
+    
+    // 특수 유틸리티 (%)
+    double buff_duration = 15;
+    double cooldown_reduction_percent = 16;
+    double cooldown_reduction_seconds = 17;
+    double cooldown_no_reset = 18;
+    
+    // 보조 지표
+    double mastery = 19;
+    double combat_power = 20;
+    double status_resistance = 21;
+    double elemental_resistance_ignore = 22;
+    
+    // 포스
+    int32 starforce = 23;
+    int32 arcaneforce = 24;
+    int32 authenticforce = 25;
+}

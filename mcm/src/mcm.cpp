@@ -11,6 +11,10 @@ bool MCM::load_log(const std::string& filepath) {
     return LogLoader::load(filepath, combat_log_);
 }
 
+void MCM::load_log_direct(const maple_combat_calculator::shared::CombatLog& log) {
+    combat_log_ = log;
+}
+
 void MCM::run() {
     if (combat_log_.operation_logs_size() == 0) {
         std::cout << "Log is empty." << std::endl;
@@ -25,16 +29,33 @@ void MCM::run() {
     );
 
     // 전투 시간 설정
-    double start_time = combat_log_.operation_logs(0).play_logs(0).clock();
+    int total_play_logs = 0;
+    for (const auto& op : combat_log_.operation_logs()) total_play_logs += op.play_logs_size();
+    
+    if (total_play_logs == 0) {
+        std::cout << "No play logs found." << std::endl;
+        return;
+    }
+
+    const auto& first_op = combat_log_.operation_logs(0);
+    double start_time = first_op.play_logs(0).clock();
+    
     const auto& last_op = combat_log_.operation_logs(combat_log_.operation_logs_size() - 1);
-    const auto& last_play = last_op.play_logs(last_op.play_logs_size() - 1);
-    double end_time = last_play.clock();
+    double end_time = last_op.play_logs(last_op.play_logs_size() - 1).clock();
+    
     aggregator_.set_combat_time(start_time, end_time);
 
     // 모든 로그 순회
+    int processed_events = 0;
     for (const auto& op_log : combat_log_.operation_logs()) {
-        process_operation(op_log);
+        for (const auto& play_log : op_log.play_logs()) {
+            for (const auto& event : play_log.events()) {
+                process_event(event, play_log.clock());
+                processed_events++;
+            }
+        }
     }
+    // std::cout << "Processed " << processed_events << " events." << std::endl;
 }
 
 void MCM::print_report() {
@@ -74,7 +95,7 @@ void MCM::process_event(const maple_combat_calculator::shared::Event& event, dou
 void MCM::handle_damage_event(const maple_combat_calculator::shared::Event& event, double clock) {
     // 1. Connector를 통해 MCC 연산 수행
     long long single_line_damage = MCMConnector::calculate_damage(*context_, event);
-
+    
     // 2. 결과 집계
     aggregator_.record_damage(clock, event.name(), single_line_damage, event.hit());
 }

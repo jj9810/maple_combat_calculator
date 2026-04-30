@@ -1,0 +1,37 @@
+# MapleStory Combat Calculator - Boss Specification Guide & Default
+# 이 파일은 보스 몬스터의 표준 사양을 정의하며, 새로운 보스 데이터를 작성할 때 가이드라인으로 사용됩니다.
+
+monster:
+  # [Required] 보스의 고유 식별자 및 표시 이름
+  name: "Default Standard Boss"
+  
+  # [Required] 보스 레벨
+  # 레벨 차이에 따른 최종 데미지 보정(Level Adjust)은 엔진 내부에서 자동으로 계산됩니다.
+  # 260: 세르니움 이후 시작점 / 285: 최상위 컨텐츠 기준
+  level: 285
+
+  # [Required] 방어율 (%)
+  # 상위 보스(루시드~카링)는 대개 300.0%를 가집니다.
+  defense_rate: 300.0
+
+  # [Required] 속성 내성 (0.0 ~ 1.0)
+  # 0.5: 모든 속성 반감 (대부분의 보스) / 0.0: 반감 없음 (허수아비)
+  elemental_resistance: 0.0
+
+  # [Optional] 보스 여부 (보공 적용 여부 결정)
+  is_boss: true
+
+  # [Optional] 요구 포스 설정
+  # 캐릭터의 포스 수치와 비교하여 데미지 배율(Force Adjust)이 엔진 내부에서 자동으로 계산됩니다.
+  requirements:
+    # 포스 종류 (ARCANE: 아케인포스, AUTHENTIC: 어센틱포스, NONE: 없음)
+    force_type: "NONE"
+    # 요구 수치
+    force_value: 0
+
+  # [Future] 페이즈별 정보 및 패턴 정의 (구현 예정)
+  # 각 페이즈별로 방어율이나 속성이 달라지는 경우를 대비한 구조입니다.
+  phases:
+    - phase_num: 1
+      hp_ratio: 1.0
+      # 특정 페이즈에서만 요구 포스가 달라지거나 추가 보정이 있다면 여기에 기술

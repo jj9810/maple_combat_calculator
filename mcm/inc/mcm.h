@@ -11,6 +11,7 @@ namespace mcm {
 class MCM {
 public:
     bool load_log(const std::string& filepath);
+    void load_log_direct(const maple_combat_calculator::shared::CombatLog& log);
     void run();
     void print_report();
 

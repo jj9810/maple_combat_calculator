@@ -66,7 +66,7 @@ target_include_directories(mcm PUBLIC
 )
 
 # MCM 라이브러리가 의존하는 라이브러리 연결
-target_link_libraries(mcm PUBLIC mcc protobuf::libprotobuf yaml-cpp::yaml-cpp)
+target_link_libraries(mcm PUBLIC mcc nexon_api protobuf::libprotobuf yaml-cpp::yaml-cpp)
 
 # MCM 실행 파일 정의
 add_executable(mcm_runner src/main.cpp)

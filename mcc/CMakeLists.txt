@@ -37,7 +37,8 @@ add_library(mcc STATIC
 target_include_directories(mcc PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-linux/include>
 )
 
-# Protobuf 라이브러리 연결
-target_link_libraries(mcc PRIVATE protobuf::libprotobuf)
+# Protobuf 및 Boost 라이브러리 연결
+target_link_libraries(mcc PUBLIC protobuf::libprotobuf)

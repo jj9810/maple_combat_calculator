@@ -27,6 +27,7 @@ bin/
 
 # Dependency management files (e.g., vcpkg)
 vcpkg/
+vcpkg_installed/
 # If you manage other dependencies manually, add those folders here too
 
 # Operating system files

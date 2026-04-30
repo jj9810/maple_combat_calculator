@@ -2,6 +2,7 @@
   "name": "maple-combat-calculator",
   "version": "0.1.0",
   "dependencies": [
+    "boost-multiprecision",
     "curl",
     "protobuf",
     "yaml-cpp"

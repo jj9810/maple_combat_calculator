@@ -7,7 +7,15 @@ WASM_BUILD_DIR := build-wasm
 
 # 환경 변수에서 읽어오거나 기본값 설정
 EMSDK_DIR ?= $(HOME)/emsdk
-VCPKG_ROOT ?= $(shell pwd)/vcpkg
+
+# vcpkg 경로 탐색: 1. 프로젝트 내부, 2. 시스템 환경변수 (CI 등)
+ifeq ($(wildcard $(shell pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake),)
+    VCPKG_ROOT ?= $(VCPKG_INSTALLATION_ROOT)
+else
+    VCPKG_ROOT ?= $(shell pwd)/vcpkg
+endif
+
+VCPKG_TOOLCHAIN := $(VCPKG_ROOT)/scripts/buildsystems/vcpkg.cmake
 
 # 병렬 빌드 설정
 # 사용자가 직접 JOBS=n 으로 지정 가능, 미지정 시 CMake의 --parallel 기본값 사용
@@ -17,10 +25,14 @@ else
     PARALLEL_FLAGS := --parallel
 endif
 
+# 기본 타겟
+all: build
+
 # 프로젝트 빌드 (Native)
 build:
 	@echo "--- Configuring and Building Project (Native) ---"
-	@cmake -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release
+	@cmake -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_TOOLCHAIN_FILE=$(VCPKG_TOOLCHAIN)
 	@cmake --build $(BUILD_DIR) $(PARALLEL_FLAGS)
 
 # WebAssembly 빌드
@@ -35,7 +47,7 @@ wasm:
 	@cd $(EMSDK_DIR) && . ./emsdk_env.sh && \
 	cd $(shell pwd) && \
 	cmake -B $(WASM_BUILD_DIR) \
-		-DCMAKE_TOOLCHAIN_FILE=$(shell pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake \
+		-DCMAKE_TOOLCHAIN_FILE=$(VCPKG_TOOLCHAIN) \
 		-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=$(EMSDK_DIR)/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake \
 		-DVCPKG_TARGET_TRIPLET=wasm32-emscripten \
 		-DCMAKE_BUILD_TYPE=Release \

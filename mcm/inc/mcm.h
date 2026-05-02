@@ -15,6 +15,8 @@ public:
     void run();
     void print_report();
 
+    const DamageAggregator& get_aggregator() const { return aggregator_; }
+
 private:
     void process_operation(const maple_combat_calculator::shared::OperationLog& op_log);
     void process_playlog(const maple_combat_calculator::shared::PlayLog& play_log);

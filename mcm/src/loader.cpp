@@ -1,5 +1,6 @@
 #include "mcm/inc/loader.h"
-#include "nexon_api/inc/nexon_api_loader.h"
+#include "nexon/skill_timeline.pb.h"
+#include "nexon/battle_practice_character_info.pb.h"
 #include <yaml-cpp/yaml.h>
 #include <fstream>
 #include <iostream>
@@ -59,17 +60,23 @@ bool LogLoader::load_nexon_json(
     std::string char_json = read_json(character_json_path);
     std::string timeline_json = read_json(timeline_json_path);
 
+    return load_nexon_json_from_string(char_json, timeline_json, combat_log);
+}
+
+bool LogLoader::load_nexon_json_from_string(
+    const std::string& char_json,
+    const std::string& timeline_json,
+    maple_combat_calculator::shared::CombatLog& combat_log
+) {
     if (char_json.empty() || timeline_json.empty()) {
         return false;
     }
 
-    nexon_api::NexonApiLoader loader("");
-    
     maple_combat_calculator::shared::BattlePracticeCharacterInfo char_info;
     maple_combat_calculator::shared::SkillTimeline timeline;
 
-    if (!loader.json_to_proto(char_json, char_info)) return false;
-    if (!loader.json_to_proto(timeline_json, timeline)) return false;
+    if (!json_to_proto(char_json, char_info)) return false;
+    if (!json_to_proto(timeline_json, timeline)) return false;
 
     // 1. 스킬 데이터베이스 로드 (Adele 고정 - 추후 확장)
     std::map<std::string, SkillInfo> skill_db;

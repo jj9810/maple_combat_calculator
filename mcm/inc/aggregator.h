@@ -18,6 +18,8 @@ public:
     void record_damage(double timestamp, const std::string& skill_name, long long damage, long long hit_count);
 
     double get_dps() const;
+    long long get_total_damage() const { return total_damage_; }
+    const std::map<std::string, SkillRecord>& get_skill_records() const { return skill_records_; }
     void print_report() const;
 
 private:

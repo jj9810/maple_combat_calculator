@@ -37,8 +37,12 @@ add_library(mcc STATIC
 target_include_directories(mcc PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-linux/include>
 )
 
 # Protobuf 및 Boost 라이브러리 연결
-target_link_libraries(mcc PUBLIC protobuf::libprotobuf)
+target_link_libraries(mcc PUBLIC protobuf::libprotobuf Boost::multiprecision)
+
+# 테스트 실행 파일 정의
+add_executable(mcc_test test/mcc_test.cpp)
+target_link_libraries(mcc_test PRIVATE mcc)
+add_test(NAME mcc_test COMMAND mcc_test)

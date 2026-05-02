@@ -65,3 +65,4 @@ target_link_libraries(nexon_api PUBLIC CURL::libcurl protobuf::libprotobuf)
 # 테스트 실행 파일 정의
 add_executable(nexon_api_test test/nexon_api_loader_test.cpp)
 target_link_libraries(nexon_api_test PRIVATE nexon_api)
+add_test(NAME nexon_api_test COMMAND nexon_api_test)

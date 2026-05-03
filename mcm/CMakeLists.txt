@@ -66,8 +66,50 @@ target_include_directories(mcm PUBLIC
 )
 
 # MCM 라이브러리가 의존하는 라이브러리 연결
-target_link_libraries(mcm PUBLIC mcc protobuf::libprotobuf yaml-cpp::yaml-cpp)
+if(EMSCRIPTEN)
+    # Wasm Protobuf는 많은 Abseil 및 utf8_range 심볼을 필요로 함
+    # vcpkg 설치 경로를 유연하게 결정합니다.
+    if(DEFINED VCPKG_INSTALLED_DIR)
+        set(VCPKG_LIB_ROOT "${VCPKG_INSTALLED_DIR}/wasm32-emscripten/lib")
+    elseif(EXISTS "${CMAKE_SOURCE_DIR}/vcpkg/installed/wasm32-emscripten/lib")
+        set(VCPKG_LIB_ROOT "${CMAKE_SOURCE_DIR}/vcpkg/installed/wasm32-emscripten/lib")
+    else()
+        # Fallback to binary dir (standard for manifest mode)
+        set(VCPKG_LIB_ROOT "${CMAKE_BINARY_DIR}/vcpkg_installed/wasm32-emscripten/lib")
+    endif()
+
+    file(GLOB ABSL_LIBS "${VCPKG_LIB_ROOT}/libabsl_*.a")
+    set(UTF8_RANGE_LIB "${VCPKG_LIB_ROOT}/libutf8_range.a")
+    
+    target_link_libraries(mcm PUBLIC 
+        mcc 
+        protobuf::libprotobuf 
+        ${ABSL_LIBS}
+        ${UTF8_RANGE_LIB}
+        yaml-cpp::yaml-cpp
+    )
+else()
+    target_link_libraries(mcm PUBLIC mcc nexon_api protobuf::libprotobuf yaml-cpp::yaml-cpp)
+endif()
 
 # MCM 실행 파일 정의
-add_executable(mcm_runner src/main.cpp)
-target_link_libraries(mcm_runner PRIVATE mcm)
+if(NOT EMSCRIPTEN)
+    add_executable(mcm_runner src/main.cpp)
+    target_link_libraries(mcm_runner PRIVATE mcm)
+endif()
+
+# WebAssembly 전용 웹 인터페이스 타겟 (Embind)
+if(EMSCRIPTEN)
+    add_executable(mcm_web src/wasm_exports.cpp)
+    target_link_libraries(mcm_web PRIVATE mcm)
+    
+    # Embind 활성화 및 추가 옵션
+    target_link_options(mcm_web PRIVATE 
+        "--bind"
+        "-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+        "-s MODULARIZE=1"
+        "-s EXPORT_NAME='MCM'"
+        "-s ALLOW_MEMORY_GROWTH=1"
+        "--preload-file ${CMAKE_SOURCE_DIR}/shared/data@/shared/data"
+    )
+endif()

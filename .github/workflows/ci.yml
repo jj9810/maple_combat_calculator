@@ -1,0 +1,72 @@
+name: C++ CI (Native & WASM)
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  native-build:
+    name: Native Build (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/vcpkg_installed
+            ~/.cache/vcpkg
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential curl zip unzip tar pkg-config
+
+      - name: Build Native
+        run: make build VCPKG_INSTALLATION_ROOT=$VCPKG_INSTALLATION_ROOT
+
+      - name: Run Tests
+        run: make test
+
+  wasm-build:
+    name: WebAssembly Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 'latest'
+
+      - name: Cache vcpkg WASM
+        uses: actions/cache@v3
+        with:
+          path: |
+            build-wasm/vcpkg_installed
+            ~/.cache/vcpkg
+          key: ${{ runner.os }}-vcpkg-wasm-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-wasm-
+
+      - name: Build WASM
+        run: make wasm EMSDK_DIR=$EMSDK VCPKG_INSTALLATION_ROOT=$VCPKG_INSTALLATION_ROOT
+
+      - name: Upload WASM Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcm-wasm-build
+          path: |
+            build-wasm/mcm/mcm_web.js
+            build-wasm/mcm/mcm_web.wasm
+            build-wasm/mcm/mcm_web.data
